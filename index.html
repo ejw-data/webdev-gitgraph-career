@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Load the JS file -->
+    <script src="https://cdn.jsdelivr.net/npm/@gitgraph/js"></script>
+</head>
+
+<body>
+    <!-- DOM element in which we'll mount our graph -->
+    <div id="graph-container"></div>
+
+    <!-- Use the `GitgraphJS` global variable to create your graph -->
+    
+    <script>
+    // Good Documentation:  https://github.com/nicoespeon/gitgraph.js/blob/master/packages/gitgraph-js/MIGRATE_FROM_GITGRAPH.JS.md 
+
+        // Get the graph container HTML element.
+        const graphContainer = document.getElementById("graph-container");
+
+        // Instantiate the graph.
+        let gitgraph = GitgraphJS.createGitgraph(graphContainer, {
+                    orientation: 'vertical-reverse',
+                    template: GitgraphJS.templateExtend("metro", {
+                        branch:{
+                            spacing:40
+                        },
+                        commit: {
+                            message: {
+                                displayAuthor: false,
+                                displayHash: false
+                            }
+                        }
+                    })
+                }
+            );
+
+        let master, coop, career, career2, skills1, skills2
+        
+        // Simulate git commands with Gitgraph API.
+        master = gitgraph.branch("Most Recent Professional Development");
+        master.commit({subject:"Started Studying Chemical Engineering at Purdue University"}).tag("Professional Development Branch");
+        master.commit("Finished Freshman Year (Year 1)");
+
+        coop = master.branch('College Internships Complete');
+
+        coop.commit("Process Development Engineer (Polymer Resin Pilot Plant) - Eastman Chemical Co-op in Chicago, IL").tag("College Internship Branch");
+        
+        skills1 = coop.branch("Data Collection and Statistical Design of Experiments");
+
+        coop.commit("Process Improvement Engineer (Polymer Resin Production) - Eastman Chemical Co-op in Chicago, IL");
+        
+        skills1.commit("Visualizations and Dashboards");
+        
+        master.commit("Finished Second Year of College");
+        coop.commit("Process Improvement Engineer (Ketones and Diketene Derivatives) - Eastman Chemical Co-op in Kingsport, TN");
+        
+        skills1.commit("Six Sigma, Data Mining, and Process Alarms")
+        
+        master.commit("Finished Third Year of College");
+        coop.commit("Process Improvement Engineer (PET)- Eastman Chemical Co-op in Kingsport, TN");        
+        coop.commit("Process Design Engineering - Eastman Chemical Co-op in Kingsport, TN");
+        
+        skills1.commit("Simulations");
+        
+        master.commit("Finished Fourth Year of College");
+        coop.commit("Chicago Patent Lawyer Internship");
+        coop.commit("Operations Engineer - National Corn-to-Ethanol Research Center Intern in Edwardsville, IL");
+        
+        skills1.commit("Standard Operating Procedures and Client Scoping")
+
+        master.merge(skills1)
+        master.merge(coop)
+
+        master.commit("Graduated from Purdue University").tag("Completed Bachelors Degree: Chemical Engineering"); 
+        
+        career = master.branch({
+                    name: "Final Chemical Systems Role",
+                    style: {
+                        color: "orange",
+                        label: {
+                            color: "orange",
+                            strokeColor: "orange"
+                        }
+                    },
+                    commitDefaultOptions: {
+                        style: {
+                            message: {
+                                color: "orange"
+                            },
+                            dot: {
+                                color: "orange"
+                            }
+                        }
+                    }
+                }
+            );
+
+        career.commit({subject:"Operations Engineeer (Polyurethanes) - BASF Corp (Geismar, LA)"}).tag({
+                name: "Engineering Career Begins: Chemical Industry",
+                style: {
+                    bgColor: "orange"
+                },
+            });
+        career.commit("Promoted to Operations Engineer - Start-up Activities - BASF");
+        skills2 = career.branch("Test")
+        skills2.commit("Process Schedules and Continuous Simulations")
+        career.commit("Promoted to Operations Engineer - Lead of Start-up Activities - BASF");
+        skills2.commit("Programming and Design of Logic")
+        career.commit("Promoted to Operations Engineer - Start-up Activities Consultant - BASF");
+
+        career.commit("Systems Engineer - Control System Development and Integration - Innovative Controls (Knoxville, TN)");
+        skills2.commit("Consultant, Process Design, and Complex UI Design");
+        career.merge(skills2)
+        master.merge({
+            branch: career, 
+            commitOptions: {
+                subject: "Completed Chemicals Industry Experience and Returning to Academia"
+            }
+        });
+
+        master.commit({
+            subject:"Started Studying Education Theory at University of Tennessee",
+            onClick(commit){
+                alert('Hello')
+            }
+        });
+
+   
+        startup = master.branch({
+                name: "EdTech Interests",
+                style: {
+                    color: "purple",
+                    label: {
+                        color: "purple",
+                        strokeColor: "purple"
+                    }
+                },
+                commitDefaultOptions: {
+                    style: {
+                        message: {
+                            color: "purple"
+                        },
+                        dot: {
+                            color: "purple"
+                        }
+                    }
+                }
+            }
+        );
+        startup.commit("Research EdTech Companies: Found Limited US Opportunities for Groundbreaking Concepts")
+
+        career2 = master.branch({
+                name: "Final Higher Education Role",
+                style: {
+                    color: "blue",
+                    label: {
+                        color: "blue",
+                        strokeColor: "blue"
+                    }
+                },
+                commitDefaultOptions: {
+                    style: {
+                        message: {
+                            color: "blue"
+                        },
+                        dot: {
+                            color: "blue"
+                        }
+                    }
+                }
+            }
+
+        );
+
+        startup.commit("Performed K-12 Learning Theory Research - Realized Limited Research Being Applied in Real World Scenarios")
+
+        master.commit("Graduated from University of Tennessee").tag("Completed Master's Degree: Education Theory & Practice");
+
+        startup.commit("Reformed Interests Upon Determining EdTech is a High Risk, Low Success Market Requiring Significant Funding")
+        startup.commit("Turned Career Interests into Personal Hobby That Focuses on Data Science Technology Opportunities")
+
+        career2.commit("Education Coordinator - University of Tennessee, Deptartment of Electrical Engineering (Power Engineering)");
+        career2.commit("Senior Program Administrator - Northwestern University, Chemistry of Life Processes Institute");
+
+        master.commit("Started Post-Graduate Data and Visualization Program at Northwestern University");
+        master.commit("Issued by Northwestern University").tag("Completed Data Science and Visualization Certificate");
+
+        career3 = startup.branch({
+                name: "Most Recent EdTech Role",
+                style: {
+                    color: "purple",
+                    label: {
+                        color: "purple",
+                        strokeColor: "purple"
+                    }
+                },
+                commitDefaultOptions: {
+                    style: {
+                        message: {
+                            color: "purple"
+                        },
+                        dot: {
+                            color: "purple"
+                        }
+                    }
+                }
+            }
+
+            );
+
+        career3.commit("Started Instructional Specialist Role - Data and Visualization Program - EdX")
+        career2.commit("Primary Role Shifted to IT Support and Building Management (during Pandemic) - Northwestern University, Chemistry of Life Processes Institute");
+        master.merge({
+                branch: career2,
+                commitOptions: {
+                    subject: "Left Higher Education Role to Focus on Data Career and Personal Obligations"
+                }
+            });
+        career3.commit("Lead Instructional Specialist - Data and Visualization Program - EdX")
+        career3.commit("Substitute Instructor - Data and Visualization Program - EdX")
+
+        career4 = master.branch({
+                name: "Personal Obligations",
+                style: {
+                    color: "aqua",
+                    label: {
+                        color: "aqua",
+                        strokeColor: "aqua"
+                    }
+                },
+                commitDefaultOptions: {
+                    style: {
+                        message: {
+                            color: "aqua"
+                        },
+                        dot: {
+                            color: "aqua"
+                        }
+                    }
+                }
+            }
+
+            );
+
+        career4.commit('Personal Obligations (Family Needs, Orthopedic Treatment, Short-term Project Consultant)')
+        
+        
+        career4.commit("Obligations Allocated am Insignificant Amount of Time (September 2022)")
+
+        master.commit("Created Data Science Curriculum and Portfolio")
+
+        career5 = master.branch({
+                name: "Digital Systems Experience",
+                style: {
+                    color: "green",
+                    label: {
+                        color: "green",
+                        strokeColor: "green"
+                    }
+                },
+                commitDefaultOptions: {
+                    style: {
+                        message: {
+                            color: "green"
+                        },
+                        dot: {
+                            color: "green"
+                        }
+                    }
+                }
+            }
+
+            );
+
+        career5.commit("Operations Analyst Engineer II - Systems Monitoring, External Clients - ExpediaGroup")
+        master.merge({
+                branch: career5,
+                commitOptions: {
+                    subject: "Left Expedia After Role, Scheduling, and Future Oportunities Did Not Match Expectations Set During Interviews"
+                }
+            });
+
+        master.commit("Independent Data Curriculum Development")  
+        career3.commit("Instructional Specialist Mentor")
+        career4.commit("Projects Complete and Family Obligations Return to Pre-Pandemic Status (July 2023)")
+
+        master.merge({
+                branch: career4,
+                commitOptions: {
+                    subject: "Developing Skills in Advanced Applications of Machine Learning with Emphasis on Established Industries"
+                }
+            });
+        
+
+        startup.commit("Personal Hobby")
+
+    </script>
+</body>
+
+</html>
